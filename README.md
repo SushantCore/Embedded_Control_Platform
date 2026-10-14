@@ -1,189 +1,101 @@
 # Embedded Control Platform
 
-A bare-metal embedded-firmware project for the **B-L4S5I-IOT01A development board** with the **STM32L4S5VITx microcontroller**.
-
-The project demonstrates how firmware can be organised into separate layers, with reusable drivers controlling microcontroller peripherals through registers.
+A bare-metal firmware project for the **B-L4S5I-IOT01A** board, built around the **STM32L4S5VITx** microcontroller.
 
 ## Architecture
 
-GitHub renders the Mermaid flowchart below directly in the README, so no separate image file is needed.
-
 ```mermaid
-flowchart TB
-    APP["APPLICATION<br/>app.c / app.h<br/>UART command handling · LED control · SOS · PWM fade · uptime"]
+flowchart TD
+    A["Application<br/>Commands and LED demos"]
+    B["Middleware<br/>Logging · Errors · Configuration"]
+    C["Drivers<br/>GPIO · UART · Timer · PWM · Interrupt"]
+    D["Hardware<br/>STM32L4S5VITx"]
 
-    subgraph MW["MIDDLEWARE"]
-        LOG["Logging<br/>logging.c"]
-        ERR["Error handling<br/>error_handler.c"]
-        CFG["Configuration<br/>config.c<br/>Key/value data in RAM"]
-    end
+    A --> B
+    A --> C
+    B --> C
+    C --> D
 
-    subgraph DRV["BARE-METAL DRIVERS"]
-        GPIO["GPIO driver"]
-        UART["UART driver<br/>USART1"]
-        TIMER["Timer driver<br/>TIM2"]
-        PWM["PWM driver<br/>TIM15 Channel 1"]
-        IRQ["Interrupt driver<br/>NVIC"]
-    end
-
-    HW["MICROCONTROLLER<br/>STM32L4S5VITx<br/>GPIO · USART1 · TIM2 · TIM15 · NVIC"]
-    CMSIS["CMSIS device definitions<br/>Register structures · IRQ declarations"]
-
-    APP -->|"logging / errors / settings"| LOG
-    APP -->|"error reporting"| ERR
-    APP -->|"read or update settings"| CFG
-
-    APP -->|"pin operations"| GPIO
-    APP -->|"serial commands and output"| UART
-    APP -->|"millisecond timebase"| TIMER
-    APP -->|"LED fading"| PWM
-
-    ERR -->|"reports errors through"| LOG
-    LOG -->|"transmits log messages"| UART
-    LOG -->|"reads timestamp"| TIMER
-
-    UART -. "enables receive interrupt" .-> IRQ
-    TIMER -. "enables timer interrupt" .-> IRQ
-
-    GPIO --> HW
-    UART --> HW
-    TIMER --> HW
-    PWM --> HW
-    IRQ --> HW
-    CMSIS -. "defines register and IRQ interfaces" .-> HW
-
-    classDef app fill:#eaf2ff,stroke:#315b91,color:#172b4d,stroke-width:1.5px;
-    classDef middleware fill:#f3f4f6,stroke:#626b78,color:#172b4d,stroke-width:1.2px;
-    classDef driver fill:#edf7f0,stroke:#477b5b,color:#173d25,stroke-width:1.2px;
-    classDef hardware fill:#fff4df,stroke:#9b7332,color:#4d3710,stroke-width:1.5px;
-    class APP app;
-    class LOG,ERR,CFG middleware;
-    class GPIO,UART,TIMER,PWM,IRQ driver;
-    class HW,CMSIS hardware;
+    style A fill:#eaf2ff,stroke:#5278a5,color:#172b4d
+    style B fill:#f2f2f2,stroke:#777777,color:#222222
+    style C fill:#eaf4ec,stroke:#578064,color:#173d25
+    style D fill:#fff2df,stroke:#a47a3c,color:#4d3710
 ```
 
-**How to read it:** The application coordinates the features. It calls drivers directly for GPIO, UART, timer, and PWM operations, and uses middleware for logging, error reporting, and configuration. Logging uses UART to print messages and the timer to add timestamps. Drivers operate the microcontroller peripherals. CMSIS provides the register definitions and interrupt declarations used by the code.
+**In simple terms:** The application decides what the project should do. Middleware provides shared services such as logging and error reporting. Drivers control the microcontroller's peripherals. The hardware is where those operations happen.
 
 ## Features
 
-- GPIO pin configuration and digital input/output operations.
-- UART command interface over USART1.
-- TIM2-based millisecond timebase.
-- TIM15 Channel 1 PWM output and LED-fading demonstration.
-- Non-blocking SOS LED pattern.
-- Timestamped `INFO`, `WARN`, and `ERROR` logging over UART.
-- RAM-based key/value configuration.
-- Error reporting with source-file and line information.
-- HardFault handler that halts for debugger inspection.
+- GPIO input/output control
+- UART serial commands
+- Millisecond timekeeping using TIM2
+- PWM output using TIM15 Channel 1
+- LED fading and SOS demonstrations
+- Timestamped logging over UART
+- Error reporting with source location
+- Simple key/value configuration stored in RAM
 
-## Hardware and software
+## Hardware and tools
 
 | Item | Details |
 |---|---|
-| Development board | B-L4S5I-IOT01A |
+| Board | B-L4S5I-IOT01A |
 | Microcontroller | STM32L4S5VITx |
-| CPU core | Arm Cortex-M4 |
 | IDE | STM32CubeIDE |
 | Language | Embedded C |
-| Peripheral access | Direct register access using CMSIS device definitions |
-| Serial format | 115200 baud, 8 data bits, no parity, 1 stop bit (8-N-1) |
-| Timer | TIM2 |
-| PWM | TIM15 Channel 1, configured on PB14 in the source |
+| Serial settings | 115200 baud, 8 data bits, no parity, 1 stop bit |
 
-**Pin and clock note:** The current source configures USART1 on PB6/PB7 and TIM15_CH1 on PB14. Confirm these alternate-function mappings and the clock tree against the board documentation and MCU reference manual before hardware testing. The UART and PWM drivers assume a 4 MHz peripheral/timer clock.
+The current source configures USART1 on PB6/PB7 and TIM15 Channel 1 on PB14. Verify the pin mappings and clock settings against the board documentation when testing on hardware.
 
-## UART commands
+## Commands
 
-Send a command followed by Enter in a serial terminal.
+Enter a command in the serial terminal, then press Enter.
 
-| Command | Action |
+| Command | Function |
 |---|---|
-| `HELP` | Print the command list |
-| `LED ON` | Turn the configured LED output on |
-| `LED OFF` | Turn the configured LED output off |
+| `HELP` | Show available commands |
+| `LED ON` | Turn the LED output on |
+| `LED OFF` | Turn the LED output off |
 | `LED TOGGLE` | Toggle the LED output |
-| `FADE` | Start the PWM fading demonstration |
+| `FADE` | Start the PWM fading demo |
 | `SOS` | Play the SOS LED pattern |
-| `UPTIME` | Print elapsed time in seconds |
+| `UPTIME` | Show elapsed time in seconds |
 
-The current implementation uses PB14 for both GPIO LED control and PWM output. Switching between these modes reconfigures the pin.
-
-## Project structure
+## Project folders
 
 ```text
 Embedded_Control_Platform/
-├── Inc/       # Public headers and driver APIs
-├── Src/       # Application, drivers, and middleware source
-├── Startup/   # MCU startup assembly
+├── Inc/       # Header files
+├── Src/       # C source files
+├── Startup/   # MCU startup code
 ├── *.ld       # Linker scripts
-├── .project   # STM32CubeIDE project settings
-├── .cproject  # Build configuration
-├── .gitignore
 └── README.md
 ```
 
-The `Inc` and `Src` folders contain the project modules. STM32CubeIDE may also include required generated support files for startup, system initialization, and C library support. Keep files required to build the project; exclude temporary build output unless there is a specific reason to publish it.
+## Build
 
-## Software layers
+1. Open or import the project in STM32CubeIDE.
+2. Confirm the selected MCU is `STM32L4S5VITx`.
+3. Select **Project → Build Project**.
+4. Check the build console for errors.
 
-### Application
-
-`app.c` processes incoming commands and coordinates the demonstrations.
-
-### Middleware
-
-- **Logging (`logging.c`):** Formats messages with timestamp, severity, and source location.
-- **Error handling (`error_handler.c`):** Converts error codes into readable messages and reports them through logging.
-- **Configuration (`config.c`):** Stores simple key/value settings in RAM. Values are lost when the board resets.
-
-### Drivers
-
-- **GPIO:** Configures pins and performs digital input/output operations.
-- **UART:** Configures USART1, transmits data, supports polling receive, and provides interrupt-driven receive callbacks.
-- **Timer:** Uses TIM2 to maintain a millisecond counter and offers a delay helper and optional callback.
-- **PWM:** Configures TIM15 Channel 1 and its duty cycle.
-- **Interrupt:** Provides NVIC enable/disable wrappers.
-
-## Build in STM32CubeIDE
-
-1. Install **STM32CubeIDE**.
-2. Open or import the existing `Embedded_Control_Platform` project.
-3. Confirm the target MCU is **STM32L4S5VITx**.
-4. Select **Project → Build Project**.
-5. Check the build console for errors. A successful build should report zero errors.
-
-The project has built successfully in the current development environment. Hardware-dependent behaviour should be confirmed on the physical board.
+The project has built successfully in the development environment. Verify peripheral operation on the physical board before treating hardware behaviour as validated.
 
 ## Hardware test checklist
 
-When the board is available:
+1. Connect the board to the computer.
+2. Open a serial terminal at **115200 baud, 8 data bits, no parity, 1 stop bit**.
+3. Reset the board and check for the startup message.
+4. Test `HELP`, `LED ON`, `LED OFF`, `LED TOGGLE`, `UPTIME`, `FADE`, and `SOS`.
+5. Check that log messages appear in the terminal.
 
-1. Connect the board over USB and identify its serial/virtual COM port.
-2. Open a serial terminal at **115200 baud, 8 data bits, no parity, 1 stop bit (115200 8-N-1)**.
-3. Reset the board and confirm the startup banner appears.
-4. Send `HELP` and confirm the command list appears.
-5. Test `LED ON`, `LED OFF`, and `LED TOGGLE`.
-6. Test `UPTIME` and confirm the reported time increases.
-7. Test `FADE` and observe the PWM output/LED.
-8. Test `SOS` and confirm the timed pattern completes.
-9. Confirm timestamped log messages appear.
-10. Record any pin, clock, or terminal configuration changes found during testing.
-
-## Design notes
+## Notes
 
 - This is a bare-metal project; it does not use an RTOS.
-- The timer delay helper is a busy-wait and should not be used for long waits in latency-sensitive code.
-- Timer callbacks execute inside the TIM2 interrupt handler and must be short and non-blocking.
-- UART transmission and logging are polling/blocking operations. Do not call them from an interrupt handler.
-- Configuration is RAM-only and resets on restart.
-- `gpio_init(..., GPIO_MODE_ALTERNATE)` selects alternate-function mode; the peripheral-specific alternate-function number is configured separately.
-- If the clock tree changes, update the UART/PWM clock constants and verify the baud rate and PWM frequency.
+- Configuration values are stored in RAM and are lost after reset.
+- Timer callbacks should be short and non-blocking.
+- Logging and UART transmission are blocking operations; do not call them from interrupt handlers.
 
 ## Author
 
-**Sushant Sharma**  
-Embedded firmware portfolio project
-
----
-
-This project is intended for learning and portfolio demonstration. Verify board-specific pin mappings, clock configuration, and peripheral behaviour on the target hardware before using it in a real product.
+**Sushant Sharma**
