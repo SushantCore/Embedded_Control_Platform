@@ -1,0 +1,9 @@
+C:/STM32/STM32CubeL4/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/Include/core_cm4.h:1679:22:__NVIC_EnableIRQ	16	static,ignoring_inline_asm
+C:/STM32/STM32CubeL4/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/Include/core_cm4.h:1717:22:__NVIC_DisableIRQ	16	static,ignoring_inline_asm
+../Src/app.c:66:13:uart_rx_handler	16	static
+../Src/app.c:108:13:update_led_mode	16	static
+../Src/app.c:116:13:start_sos	8	static
+../Src/app.c:136:13:update_sos	16	static
+../Src/app.c:174:13:process_command	64	static
+../Src/app.c:266:6:app_init	8	static
+../Src/app.c:291:6:app_run	56	static

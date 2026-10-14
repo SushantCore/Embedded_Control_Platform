@@ -1,0 +1,3 @@
+../Src/config.c:24:6:config_init	8	static
+../Src/config.c:29:17:config_set	24	static
+../Src/config.c:72:17:config_get	24	static

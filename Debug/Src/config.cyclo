@@ -1,0 +1,3 @@
+../Src/config.c:24:6:config_init	1
+../Src/config.c:29:17:config_set	10
+../Src/config.c:72:17:config_get	7

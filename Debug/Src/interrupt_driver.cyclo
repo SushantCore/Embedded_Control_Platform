@@ -1,0 +1,4 @@
+C:/STM32/STM32CubeL4/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/Include/core_cm4.h:1679:22:__NVIC_EnableIRQ	2
+C:/STM32/STM32CubeL4/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/Include/core_cm4.h:1717:22:__NVIC_DisableIRQ	2
+../Src/interrupt_driver.c:10:6:interrupt_enable	2
+../Src/interrupt_driver.c:20:6:interrupt_disable	2

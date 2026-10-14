@@ -1,0 +1,7 @@
+../Src/timer_driver.c:23:6:TIM2_IRQHandler	8	static
+../Src/timer_driver.c:45:6:timer_init	16	static
+../Src/timer_driver.c:80:6:timer_start	4	static
+../Src/timer_driver.c:88:6:timer_stop	4	static
+../Src/timer_driver.c:96:10:timer_get_ms	4	static
+../Src/timer_driver.c:105:6:timer_delay_ms	24	static
+../Src/timer_driver.c:118:6:timer_set_callback	16	static

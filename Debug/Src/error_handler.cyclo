@@ -1,0 +1,2 @@
+../Src/error_handler.c:13:6:error_handler	7
+../Src/error_handler.c:63:6:HardFault_Handler	1

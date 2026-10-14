@@ -1,0 +1,4 @@
+../Src/pwm_driver.c:25:6:pwm_init	6
+../Src/pwm_driver.c:111:6:pwm_set_duty	6
+../Src/pwm_driver.c:142:6:pwm_start	3
+../Src/pwm_driver.c:150:6:pwm_stop	2

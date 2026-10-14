@@ -1,0 +1,2 @@
+../Src/logging.c:14:6:logging_init	1
+../Src/logging.c:19:6:log_write	7

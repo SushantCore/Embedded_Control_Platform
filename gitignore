@@ -1,0 +1,19 @@
+# STM32CubeIDE generated build output
+Debug/
+Release/
+
+# Compiled firmware and linker output
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+*.o
+*.d
+
+# IDE and operating-system temporary files
+.metadata/
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
