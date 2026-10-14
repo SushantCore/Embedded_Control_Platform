@@ -4,6 +4,7 @@ A bare-metal firmware project for the **B-L4S5I-IOT01A** board, built around the
 
 ## Architecture
 
+```mermaid
 flowchart TD
     A["Application<br/>Commands and LED demos"]
     B["Middleware<br/>Logging, errors and configuration"]
@@ -14,6 +15,7 @@ flowchart TD
     B --> C
     C --> D
     A -. "Direct peripheral access through driver APIs" .-> C
+```
 
 **In simple terms:** The application decides what the project should do. Middleware provides shared services such as logging and error reporting. Drivers control the microcontroller's peripherals. The hardware is where those operations happen.
 
