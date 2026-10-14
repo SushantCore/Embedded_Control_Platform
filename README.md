@@ -22,20 +22,15 @@ The application accepts commands over a serial connection. Drivers control the m
 
 ```mermaid
 flowchart TD
-    A["APPLICATION<br/>Commands and LED demos"]
-    B["MIDDLEWARE<br/>Logging, errors and configuration"]
-    C["DRIVERS<br/>GPIO, UART, timer, PWM and interrupts"]
-    D["HARDWARE<br/>STM32L4S5VITx"]
+    A["Application<br/>Commands and LED demos"]
+    B["Middleware<br/>Logging, errors and configuration"]
+    C["Drivers<br/>GPIO, UART, timer, PWM and interrupts"]
+    D["Hardware<br/>STM32L4S5VITx"]
 
     A --> B
     B --> C
     C --> D
-    A -. "Direct driver API calls" .-> C
-
-    style A fill:#eaf2ff,stroke:#5278a5,color:#172b4d,stroke-width:1.5px
-    style B fill:#f3f4f6,stroke:#777777,color:#222222,stroke-width:1.5px
-    style C fill:#eaf4ec,stroke:#578064,color:#173d25,stroke-width:1.5px
-    style D fill:#fff2df,stroke:#a47a3c,color:#4d3710,stroke-width:1.5px
+    A -. "Direct peripheral access through driver APIs" .-> C
 ```
 
 **How to read this:** The application coordinates the features. It uses middleware for shared services and also calls driver APIs directly when it needs to control a peripheral. Drivers access the microcontroller hardware.
