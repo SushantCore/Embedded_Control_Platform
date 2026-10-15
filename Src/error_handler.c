@@ -66,6 +66,6 @@ void HardFault_Handler(void)
 
     while (1)
     {
-        /* Halt for debugger inspection. */
+
     }
 }

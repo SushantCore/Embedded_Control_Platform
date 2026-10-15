@@ -214,10 +214,6 @@ static void process_command(const char *command)
     }
     else if (strcmp(command, "FADE") == 0)
     {
-        /*
-         * Reconfigure PB14 for TIM15 PWM.
-         * This restores alternate-function mode after GPIO commands.
-         */
     	sos_active = 0U;
 
         pwm_init(1000U);
