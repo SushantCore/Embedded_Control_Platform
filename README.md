@@ -139,7 +139,6 @@ When the board is available:
 ## Author
 
 **Sushant Sharma**  
-Embedded firmware portfolio project
 
 ---
 
