@@ -18,7 +18,6 @@ static uint8_t pwm_initialized = 0U;
 void pwm_init(uint32_t frequency)
 {
     uint32_t prescaler;
-    uint32_t timer_clock;
     uint32_t period;
 
     if (frequency == 0U || frequency > PWM_TIMER_CLOCK_HZ)
@@ -26,32 +25,38 @@ void pwm_init(uint32_t frequency)
         return;
     }
 
-    prescaler = (PWM_TIMER_CLOCK_HZ / frequency
-                 + PWM_TIMER_MAX_ARR) /
-                (PWM_TIMER_MAX_ARR + 1U);
+    prescaler = 0U;
 
-    if (prescaler == 0U)
-    {
-        prescaler = 1U;
-    }
-
-    prescaler -= 1U;
-
-    timer_clock = PWM_TIMER_CLOCK_HZ / (prescaler + 1U);
-    period = timer_clock / frequency;
+    period = PWM_TIMER_CLOCK_HZ / frequency;
 
     if (period == 0U)
     {
         return;
     }
 
-    period -= 1U;
+    if (period > (PWM_TIMER_MAX_ARR + 1U))
+    {
+        prescaler = (period + PWM_TIMER_MAX_ARR) /
+                    (PWM_TIMER_MAX_ARR + 1U);
 
-    if (period > PWM_TIMER_MAX_ARR)
+        period = PWM_TIMER_CLOCK_HZ /
+                 ((prescaler + 1U) * frequency);
+    }
+
+    if (period == 0U || period > (PWM_TIMER_MAX_ARR + 1U))
     {
         return;
     }
 
+    prescaler = (PWM_TIMER_CLOCK_HZ /
+                 (frequency * period)) - 1U;
+
+    if (prescaler > PWM_TIMER_MAX_ARR)
+    {
+        return;
+    }
+
+    period -= 1U;
     RCC->AHB2ENR |= (1U << 1);
     RCC->APB2ENR |= (1U << 16);
 

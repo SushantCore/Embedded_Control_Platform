@@ -1,6 +1,6 @@
-../Src/uart_driver.c:29:6:uart_init	4
-../Src/uart_driver.c:92:6:uart_send_byte	2
-../Src/uart_driver.c:105:6:uart_send_string	3
-../Src/uart_driver.c:122:9:uart_receive_byte	2
-../Src/uart_driver.c:135:6:uart_enable_rx_interrupt	1
-../Src/uart_driver.c:151:6:USART1_IRQHandler	4
+../Src/uart_driver.c:18:6:uart_init	4
+../Src/uart_driver.c:69:6:uart_send_byte	2
+../Src/uart_driver.c:78:6:uart_send_string	3
+../Src/uart_driver.c:92:9:uart_receive_byte	2
+../Src/uart_driver.c:101:6:uart_enable_rx_interrupt	1
+../Src/uart_driver.c:112:6:USART1_IRQHandler	4

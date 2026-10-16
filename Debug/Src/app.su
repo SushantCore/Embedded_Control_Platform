@@ -5,5 +5,5 @@ C:/STM32/STM32CubeL4/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/Include/core_cm4.h:17
 ../Src/app.c:116:13:start_sos	8	static
 ../Src/app.c:136:13:update_sos	16	static
 ../Src/app.c:174:13:process_command	64	static
-../Src/app.c:266:6:app_init	8	static
-../Src/app.c:291:6:app_run	56	static
+../Src/app.c:262:6:app_init	8	static
+../Src/app.c:287:6:app_run	56	static

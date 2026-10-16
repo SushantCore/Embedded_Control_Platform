@@ -1,6 +1,6 @@
-../Src/gpio_driver.c:11:16:gpio_port_valid	16	static
-../Src/gpio_driver.c:24:13:gpio_enable_clock	16	static
-../Src/gpio_driver.c:45:6:gpio_init	24	static
-../Src/gpio_driver.c:64:6:gpio_write	16	static
-../Src/gpio_driver.c:82:9:gpio_read	16	static
-../Src/gpio_driver.c:91:6:gpio_toggle	16	static
+../Src/gpio_driver.c:10:16:gpio_port_valid	16	static
+../Src/gpio_driver.c:22:13:gpio_enable_clock	16	static
+../Src/gpio_driver.c:42:6:gpio_init	24	static
+../Src/gpio_driver.c:58:6:gpio_write	16	static
+../Src/gpio_driver.c:73:9:gpio_read	16	static
+../Src/gpio_driver.c:81:6:gpio_toggle	16	static

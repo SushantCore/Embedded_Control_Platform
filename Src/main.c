@@ -22,8 +22,8 @@
 
 int main(void)
 {
-    timer_init(3999U, 0U);
-    timer_start();
+	timer_init(39U, 99U);
+	timer_start();
 
     app_init();
 

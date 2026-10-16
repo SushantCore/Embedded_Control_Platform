@@ -16,7 +16,7 @@ void TIM2_IRQHandler(void)
 {
     if ((TIM2->SR & (1U << 0)) != 0U)
     {
-    	TIM2->SR = ~(1U << 0);
+        TIM2->SR = ~(1U << 0);
 
         timer_ms++;
 
@@ -29,27 +29,24 @@ void TIM2_IRQHandler(void)
 
 void timer_init(uint32_t prescaler, uint32_t period)
 {
-	if (prescaler > 65535U)
-	    {
-	        return;
-	    }
+    if (prescaler > 65535U || period > 65535U)
+    {
+        return;
+    }
 
-    RCC->APB1ENR1 |= (1U << 0);
+    RCC->APB1ENR1 |= (1U << 0);  // Enable TIM2 clock
 
-    TIM2->CR1 &= ~(1U << 0);
-    TIM2->DIER &= ~(1U << 0);
+    TIM2->CR1 &= ~(1U << 0);    // Stop TIM2
+    TIM2->DIER &= ~(1U << 0);   // Disable update interrupt
 
     TIM2->PSC = prescaler;
     TIM2->ARR = period;
     TIM2->CNT = 0U;
 
-    timer_ms = 0U;
+    TIM2->EGR = (1U << 0);      // Generate update event
+    TIM2->SR = 0U;              // Clear status flags
 
-    TIM2->EGR = (1U << 0);
-
-    TIM2->SR = 0U;
-
-    TIM2->DIER |= (1U << 0);
+    TIM2->DIER |= (1U << 0);    // Enable update interrupt
     interrupt_enable(TIM2_IRQn);
 }
 
